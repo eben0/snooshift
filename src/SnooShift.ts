@@ -4,8 +4,6 @@ import { Comment, Submission } from "snoowrap/dist/objects";
 import EventSource from "eventsource";
 import { CommentSearchOptions, SubmissionSearchOptions } from "./SearchOptions";
 
-const streamUrl = "http://stream.pushshift.io";
-
 export enum Type {
   Comment = "Comment",
   Submission = "Submission",
@@ -20,6 +18,8 @@ const submissionPath = "/submission/search";
 const elasticURL = "https://elastic.pushshift.io";
 const elasticCommentPath = "/rc/comments/_search";
 const elasticSubmissionPath = "/rs/submissions/_search";
+
+const streamUrl = "http://stream.pushshift.io";
 
 const headers = {
   "Content-Type": "application/json",
@@ -42,19 +42,32 @@ export class SnooShift {
   protected snoowrap: Snoowrap;
   private snoowrapOptions: Options;
 
+  /**
+   * create new SnooShift object
+   * accepts SnoowrapOptions object
+   * @param snoowrapOptions
+   */
   constructor(snoowrapOptions: Options = defaultOptions) {
     this.snoowrapOptions = snoowrapOptions;
     this.snoowrap = new Snoowrap(snoowrapOptions);
+    // create base axios object
     this.axios = axios.create({
       baseURL: baseURL,
       headers: headers,
     });
+    // create elasticsearch axios object
     this.axiosElastic = axios.create({
       baseURL: elasticURL,
       headers: headers,
     });
   }
 
+  /**
+   *
+   * @param type
+   * @param response
+   * @private
+   */
   private _snooWrapper(
     type: string,
     response: AxiosResponse
@@ -66,10 +79,17 @@ export class SnooShift {
     return data.map((object) => this.snoowrap._newObject(type, object));
   }
 
-  getSnoowrap() {
+  /**
+   * gets Snoowrap client
+   */
+  getSnoowrap(): Snoowrap {
     return this.snoowrap;
   }
 
+  /**
+   * searches for comments
+   * @param search
+   */
   async searchComments(
     search: CommentSearchOptions = {}
   ): Promise<Comment[] | object[]> {
@@ -77,6 +97,10 @@ export class SnooShift {
     return this._snooWrapper(Type.Comment, response);
   }
 
+  /**
+   * gets comment by id
+   * @param id
+   */
   async getComment(id: string): Promise<Comment | any> {
     let params = {
       ids: id,
@@ -85,6 +109,10 @@ export class SnooShift {
     return (await this.searchComments(params))[0];
   }
 
+  /**
+   * searches for submissions
+   * @param search
+   */
   async searchSubmissions(
     search: SubmissionSearchOptions = {}
   ): Promise<Submission[] | object[]> {
@@ -92,6 +120,10 @@ export class SnooShift {
     return this._snooWrapper(Type.Submission, response);
   }
 
+  /**
+   * gets submission by id
+   * @param id
+   */
   async getSubmission(id: string): Promise<Submission | any> {
     let params = {
       ids: id,
@@ -100,6 +132,10 @@ export class SnooShift {
     return (await this.searchSubmissions(params))[0];
   }
 
+  /**
+   * querying comment using elasticsearch
+   * @param elasticQuery
+   */
   async elasticComments(elasticQuery: object) {
     const response = await this.axiosElastic.get(elasticCommentPath, {
       params: {
@@ -110,6 +146,10 @@ export class SnooShift {
     return response.data;
   }
 
+  /**
+   * querying submissions using elasticsearch
+   * @param elasticQuery
+   */
   async elasticSubmissions(elasticQuery: object) {
     const response = await this.axiosElastic.get(elasticSubmissionPath, {
       params: {
@@ -120,16 +160,29 @@ export class SnooShift {
     return response.data;
   }
 
+  /**
+   * listens to the sse live stream
+   * @param params
+   * @param args
+   */
   static liveStream(params = {}, args = {}) {
     const qs = new URLSearchParams(params).toString();
     const url = `${streamUrl}/?${qs}`;
     return new EventSource(url, args);
   }
 
+  /**
+   * encodes number to base36 string
+   * @param num
+   */
   static base36Encode(num: number) {
     return num.toString(36);
   }
 
+  /**
+   * decodes base36 string to number
+   * @param str
+   */
   static base10Decode(str: string) {
     return parseInt(str, 36);
   }
