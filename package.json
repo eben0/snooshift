@@ -1,5 +1,5 @@
 {
-  "name": "pushshift.js",
+  "name": "snooshift",
   "version": "1.0.0",
   "description": "A JavaScript wrapper for Reddit Pushshift API based on Snoowrap",
   "scripts": {
@@ -27,7 +27,7 @@
     "psaw",
     "snoo"
   ],
-  "author": "eben0 (https://github.com/eben0)",
+  "author": "eben0 <eben0@users.noreply.github.com>",
   "bugs": {
     "url": "https://github.com/eben0/snooshift/issues"
   },
