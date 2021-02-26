@@ -98,8 +98,7 @@ const query = {
   },
   sort: {
     created_utc: "desc",
-  },
-  size: 1,
+  }
 };
 
 // searches for author's comments

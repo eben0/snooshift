@@ -183,7 +183,7 @@ export class SnooShift {
    * decodes base36 string to number
    * @param str
    */
-  static base10Decode(str: string) {
+  static base36Decode(str: string) {
     return parseInt(str, 36);
   }
 }
