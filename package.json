@@ -1,0 +1,50 @@
+{
+  "name": "pushshift.js",
+  "version": "1.0.0",
+  "description": "A JavaScript wrapper for Reddit Pushshift API based on Snoowrap",
+  "scripts": {
+    "start": "node dist/",
+    "build": "tsc",
+    "watch": "nodemon test/test.ts",
+    "test": "mocha --timeout 100000000",
+    "prepublishOnly": "npm run test && npm run build"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eben0/snooshift.git"
+  },
+  "keywords": [
+    "pushshift",
+    "reddit",
+    "api",
+    "wrapper",
+    "praw",
+    "psaw",
+    "snoo"
+  ],
+  "author": "eben0 (https://github.com/eben0)",
+  "bugs": {
+    "url": "https://github.com/eben0/snooshift/issues"
+  },
+  "homepage": "https://github.com/eben0/snooshift",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "eventsource": "^1.0.7",
+    "snoowrap": "^1.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.31",
+    "@types/request": "^2.48.5",
+    "mocha": "^8.3.0",
+    "nodemon": "^2.0.7",
+    "ts-loader": "^8.0.17",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.5"
+  }
+}
