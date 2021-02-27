@@ -2,11 +2,11 @@
 JavaScript wrapper library for [Pushshift](https://github.com/pushshift/api) with [Snoowrap](https://github.com/not-an-aardvark/snoowrap) support.
 
 ## Install
-`npm install snooshift`
+```shell
+npm i -S snooshift
+```
 
 ## Searching Comments
-
-### Search Parameters
 
 ```javascript
 import { SnooShift } from "snooshift";

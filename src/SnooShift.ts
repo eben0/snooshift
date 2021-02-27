@@ -23,7 +23,7 @@ const streamUrl = "http://stream.pushshift.io";
 
 const headers = {
   "Content-Type": "application/json",
-  Referer: "https://www,reddit.com/",
+  Referer: "https://www.reddit.com/",
 };
 
 const defaultOptions: Options = {
@@ -76,7 +76,26 @@ export class SnooShift {
     if (response.data && Array.isArray(response.data.data)) {
       data = response.data.data;
     }
-    return data.map((object) => this.snoowrap._newObject(type, object));
+    const objects = [];
+    for (const object of data) {
+      if (this._isDeleted(object)) continue;
+      objects.push(this.snoowrap._newObject(type, object));
+    }
+    return objects;
+  }
+
+  /**
+   * checks for deleted items
+   * @param object
+   * @private
+   */
+  private _isDeleted(object: any): boolean {
+    let list = ["[deleted]", "[removed]"];
+    return (
+      list.includes(object.body) ||
+      list.includes(object.selftext) ||
+      list.includes(object.author)
+    );
   }
 
   /**

@@ -18,6 +18,32 @@ describe("SnooShift", () => {
     assert.strictEqual(sub.author, "Discord_Only_Leaks9");
   });
 
+  it("should get submissions in test subreddit", async function () {
+    let hrs48 = Math.floor((Date.now() - 60000 * 60 * 48) / 1000);
+    let subs = await s.searchSubmissions({
+      subreddit: "test",
+      size: 25,
+      after: hrs48,
+    });
+    assert.notStrictEqual(
+      subs,
+      undefined,
+      "submissions should not be undefined"
+    );
+    assert.strictEqual(
+      Array.isArray(subs),
+      true,
+      "submissions should be an array"
+    );
+    assert.strictEqual(
+      subs.length > 0,
+      true,
+      "should find at least one submission"
+    );
+    let deleted = subs.filter((sub) => sub.author === "[deleted]").length > 0;
+    assert.strictEqual(deleted, false, "deleted messages should not be found");
+  });
+
   it("should get my last comment using elastic search", async function () {
     let result = await s.elasticComments({
       query: {
@@ -52,9 +78,7 @@ describe("SnooShift", () => {
     assert.strictEqual(source.author, "eben0");
     assert.strictEqual(source.author_fullname, "t2_9bvim6ae");
   });
-
 });
-
 
 function assertElasticSearchResult(result) {
   assert.notStrictEqual(result, undefined);
