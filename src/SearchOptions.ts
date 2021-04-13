@@ -7,8 +7,8 @@ export declare interface CommentSearchOptions {
   aggs?: string[];
   author?: string;
   subreddit?: string;
-  after?: number;
-  before: string;
+  after?: number | string;
+  before?: number | string;
   frequency?: string;
   metadata?: boolean;
 }
