@@ -22,21 +22,21 @@ export declare interface SubmissionSearchOptions {
   "selftext:not"?: string;
   size?: number;
   fields?: string;
-  sort?: string;
-  sort_type?: string;
+  sort?: "asc" | "desc";
+  sort_type?: "score" | "num_comments" | "created_utc";
   aggs?: string;
   author?: string;
   subreddit?: string;
-  after?: number;
-  before?: number;
-  score?: number;
-  num_comments?: number;
+  after?: number | string;
+  before?: number | string;
+  score?: number | string;
+  num_comments?: number | string;
   over_18?: boolean;
   is_video?: boolean;
   locked?: boolean;
   stickied?: boolean;
   spoiler?: boolean;
   contest_mode?: boolean;
-  frequency?: string;
+  frequency?: "second" | "minute" | "hour" | "day";
   metadata?: boolean;
 }
